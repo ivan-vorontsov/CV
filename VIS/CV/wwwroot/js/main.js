@@ -61,7 +61,11 @@ function update() {
 }
 
 function createRandomPosition(canvas) {
-    return { x: Math.random() * canvas.width, y: Math.random() * canvas.height };
+    let dr = Math.random() * Math.min(canvas.height, canvas.width) / 2,
+        omega = Math.random() * 2 * Math.PI,
+        x = dr * Math.cos(omega),
+        y = dr * Math.sin(omega);
+    return { x: x + canvas.width / 2, y: y + canvas.height / 2 };
 }
 
 function drawStar(pos, scale, ctx) {
