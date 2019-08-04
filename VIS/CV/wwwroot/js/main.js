@@ -13,7 +13,7 @@
     return canvas;
 }
 
-let canvas, positions = [], dencity = 73, scales = [], _scaleMax = 1, _scaleStep = 0.05, radius = 14;
+let canvas, positions = [], dencity = 999, scales = [], _scaleMax = 1, _scaleStep = 0.05, radius = 14;
 
 window.addEventListener('load', () => {
     canvas = makeCanvas();
