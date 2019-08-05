@@ -6,6 +6,7 @@
     let resize = () => {
         canvas.width = appArea.clientWidth;
         canvas.height = appArea.clientHeight;
+        radius = 500 / 1920 * 14;
     };
     resize();
     appArea.appendChild(canvas);
