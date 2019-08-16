@@ -18,11 +18,16 @@
 
 // ------------
 
-let canvas, radius, offset, step = 10, positions = [], A = 10, D, k = 1, omega = 1, phi = 50;
+let canvas, radius, offset, step = 5, positions = [], A = 30, D, k = 10,
+    omega = 1000, phi = 1, p = 0.0005, starPositions = [], scales = [],
+    dencity = 999, _scaleMax = 1, _scaleStep = 0.05;
 
 window.addEventListener('load', () => {
     canvas = makeCanvas();
-
+    for (let i = 0; i < dencity; i++) {
+        starPositions.push(createRandomPosition(canvas));
+        scales.push(0);
+    }
     appLoop();
 });
 
@@ -37,15 +42,17 @@ function appLoop(elapsed) {
         positions.push([x, y]);
     }
 
-    render(canvas.context);
+    update(elapsed);
+
+    render(canvas.context, elapsed * 0.001);
 }
 
 function sineWave(x, t) {
-    let y = A * Math.sin(k * x - omega * t + phi) + D;
+    let y = A * Math.sin(p * (k * x - omega * t + phi)) + D;
     return y;
 }
 
-function render(ctx) {
+function render(ctx, t) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.lineWidth = 3;
     ctx.strokeStyle = "blue";
@@ -65,7 +72,23 @@ function render(ctx) {
         ctx.closePath();
         ctx.fill();
     }
+
+    for (let i = 0; i < scales.length; i += 1) {
+        let scale = scales[i];
+        if (scales[i] > _scaleMax) {
+            scale = _scaleMax * 2 - scales[i];
+        }
+        let pos = starPositions[i];
+        if (pos.y < sineWave(pos.x, t)) {
+            ctx.fillStyle = "white";
+        } else {
+            ctx.fillStyle = "black";
+        }
+        drawStar(pos, scale, ctx);
+    }
 }
+
+
 
 // ------------
 
@@ -121,39 +144,39 @@ function render(ctx) {
 //    }
 //}
 
-//function update() {
-//    for (let i = 0; i < scales.length; i += 1) {
-//        if (scales[i] === 0 && Math.random() < 0.01) {
-//            scales[i] += _scaleStep;
-//        } else if (scales[i] !== 0) {
-//            scales[i] += _scaleStep;
-//        }
-//        if (scales[i] >= _scaleMax * 2) {
-//            scales[i] = 0;
-//            positions[i] = createRandomPosition(canvas);
-//        }
-//    }
-//}
+function update() {
+    for (let i = 0; i < scales.length; i += 1) {
+        if (scales[i] === 0 && Math.random() < 0.01) {
+            scales[i] += _scaleStep;
+        } else if (scales[i] !== 0) {
+            scales[i] += _scaleStep;
+        }
+        if (scales[i] >= _scaleMax * 2) {
+            scales[i] = 0;
+            starPositions[i] = createRandomPosition(canvas);
+        }
+    }
+}
 
-//function createRandomPosition(canvas) {
-//    let dr = Math.random() * Math.min(canvas.height, canvas.width) / 2,
-//        omega = Math.random() * 2 * Math.PI,
-//        x = dr * Math.cos(omega),
-//        y = dr * Math.sin(omega);
-//    return { x: x + canvas.width / 2, y: y + canvas.height / 2 };
-//}
+function createRandomPosition(canvas) {
+    let dr = Math.random() * Math.min(canvas.height, canvas.width) / 2,
+        omega = Math.random() * 2 * Math.PI,
+        x = dr * Math.cos(omega),
+        y = dr * Math.sin(omega);
+    return { x: Math.random() * canvas.width, y: Math.random() * canvas.height };
+}
 
-//function drawStar(pos, scale, ctx) {
-//    ctx.save();
-//    ctx.beginPath();
-//    ctx.moveTo(pos.x + radius * scale, pos.y);
-//    ctx.quadraticCurveTo(pos.x, pos.y, pos.x, pos.y + radius * scale);
-//    ctx.quadraticCurveTo(pos.x, pos.y, pos.x - radius * scale, pos.y);
-//    ctx.quadraticCurveTo(pos.x, pos.y, pos.x, pos.y - radius * scale);
-//    ctx.quadraticCurveTo(pos.x, pos.y, pos.x + radius * scale, pos.y);
-//    ctx.fill();
-//    ctx.restore();
-//}
+function drawStar(pos, scale, ctx) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(pos.x + radius * scale, pos.y);
+    ctx.quadraticCurveTo(pos.x, pos.y, pos.x, pos.y + radius * scale);
+    ctx.quadraticCurveTo(pos.x, pos.y, pos.x - radius * scale, pos.y);
+    ctx.quadraticCurveTo(pos.x, pos.y, pos.x, pos.y - radius * scale);
+    ctx.quadraticCurveTo(pos.x, pos.y, pos.x + radius * scale, pos.y);
+    ctx.fill();
+    ctx.restore();
+}
 
 //function bezierCurve(t, p0, p1, p2, p3) {
 //    let x = Math.pow(1 - t, 3) * p0.x + 3 * t * Math.pow(1 - t, 2) * p1.x + 3 * t * t * (1 - t) * p2.x + Math.pow(t, 3) * p3.x;
