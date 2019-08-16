@@ -19,7 +19,7 @@
 // ------------
 
 let canvas, radius, offset, step = 5, positions = [], A = 30, D, k = 10,
-    omega = 1000, phi = 1, p = 0.0005, starPositions = [], scales = [],
+    omega = 5000, phi = 1, p = 0.0005, starPositions = [], scales = [],
     dencity = 999, _scaleMax = 1, _scaleStep = 0.05;
 
 window.addEventListener('load', () => {
@@ -62,7 +62,7 @@ function render(ctx, t) {
         ctx.lineTo(positions[i][0], positions[i][1]);
     }
     ctx.stroke();
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "blue";
     for (let i = 0; i < positions.length - 1; i += 1) {
         ctx.beginPath();
         ctx.moveTo(positions[i][0], 0);
@@ -82,7 +82,7 @@ function render(ctx, t) {
         if (pos.y < sineWave(pos.x, t)) {
             ctx.fillStyle = "white";
         } else {
-            ctx.fillStyle = "black";
+            ctx.fillStyle = "blue";
         }
         drawStar(pos, scale, ctx);
     }
@@ -91,58 +91,6 @@ function render(ctx, t) {
 
 
 // ------------
-
-//let canvas, positions = [], dencity = 999, scales = [], _scaleMax = 1, _scaleStep = 0.05, radius, offset;
-
-//window.addEventListener('load', () => {
-//    canvas = makeCanvas();
-//    for (let i = 0; i < dencity; i++) {
-//        positions.push(createRandomPosition(canvas));
-//        scales.push(0);
-//    }
-
-//    appLoop();
-//});
-
-//function appLoop() {
-//    requestAnimationFrame(appLoop);
-
-//    update();
-//    render(canvas.context)
-//}
-
-//function render(ctx) {
-//    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-//    ctx.fillStyle = "black";
-//    ctx.strokeStyle = "black";
-//    ctx.lineWidth = 3;
-//    ctx.beginPath();
-//    ctx.moveTo(0, 0);
-//    ctx.lineTo(canvas.width, 0);
-//    ctx.lineTo(canvas.width, canvas.height / 2 - offset);
-//    ctx.bezierCurveTo(canvas.width, canvas.height / 2, 0, canvas.height / 2, 0, canvas.height / 2 + offset);
-//    ctx.lineTo(0, 0);
-//    ctx.fill();
-//    let point0 = { x: 0, y: canvas.height / 2 + offset },
-//        point1 = { x: 0, y: canvas.height / 2 },
-//        point2 = { x: canvas.width, y: canvas.height / 2 },
-//        point3 = { x: canvas.width, y: canvas.height / 2 - offset };
-//    for (let i = 0; i < scales.length; i += 1) {
-//        let scale = scales[i];
-//        if (scales[i] > _scaleMax) {
-//            scale = _scaleMax * 2 - scales[i];
-//        }
-//        let pos = positions[i];
-//        let t = pos.x / canvas.width;
-//        let point = bezierCurve(t, point0, point1, point2, point3);
-//        if (pos.y < point.y) {
-//            ctx.fillStyle = "white";
-//        } else {
-//            ctx.fillStyle = "black";
-//        }
-//        drawStar(pos, scale, ctx);
-//    }
-//}
 
 function update() {
     for (let i = 0; i < scales.length; i += 1) {
