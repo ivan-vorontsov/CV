@@ -18,8 +18,8 @@
 
 // ------------
 
-let canvas, radius, offset, step = 5, positions = [], A = 30, D, k = 10,
-    omega = 5000, phi = 1, p = 0.0005, starPositions = [], scales = [],
+let canvas, radius, offset, step = 5, positions = [], A = 80, D, k = 0.0005,
+    omega = 0.5, phi = 0, starPositions = [], scales = [],
     dencity = 999, _scaleMax = 1, _scaleStep = 0.05;
 
 window.addEventListener('load', () => {
@@ -48,7 +48,7 @@ function appLoop(elapsed) {
 }
 
 function sineWave(x, t) {
-    let y = A * Math.sin(p * (k * x - omega * t + phi)) + D;
+    let y = A * Math.sin(k * x - omega * t + phi) + D;
     return y;
 }
 
