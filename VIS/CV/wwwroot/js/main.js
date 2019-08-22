@@ -20,7 +20,7 @@
 
 let canvas, radius, offset, step = 5, positions = [], A = 30, D, k = 10,
     omega = 5000, phi = 1, p = 0.0005, starPositions = [], scales = [],
-    dencity = 999, _scaleMax = 1, _scaleStep = 0.05;
+    dencity = 9999, _scaleMax = 1, _scaleStep = 0.05;
 
 window.addEventListener('load', () => {
     canvas = makeCanvas();
