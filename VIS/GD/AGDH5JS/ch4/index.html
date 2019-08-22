@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript" src="assets.js"></script>
+	<script type="text/javascript" src="main.js"></script>
+	<script type="text/javascript" src="displayObject.js"></script>
+	<script type="text/javascript" src="rectangle.js"></script>
+	<script type="text/javascript" src="circle.js"></script>
+	<script type="text/javascript" src="line.js"></script>
+	<script type="text/javascript" src="text.js"></script>
+	<script type="text/javascript" src="group.js"></script>
+	<script type="text/javascript" src="sprite.js"></script>
+	<script type="text/javascript">
+		let canvas = makeCanvas(512, 512);
+		let stage = new DisplayObject();
+
+		assets.load([
+			"images/animals.json", 
+			"images/fairy.png", 
+			"images/button.json",
+			"images/cat.png",
+			"images/tiger.png",
+			"images/hedgehog.png"
+		]).then(() => setup());
+
+		function setup() {
+
+			stage.width = canvas.width;
+			stage.height = canvas.height;
+
+			let box = rectangle(96, 96, "blue", "none", 0, 54, 64);
+			box.pivotX = 0.25;
+			box.pivotY = 0.25;
+			box.rotation = 0.8;
+
+			let cyanCircle = circle(64, "cyan", "red", 4, 64, 180);
+
+			let blackLine = line("black", 4, 200, 64, 264, 128);
+			let redLine = line("red", 4, 200, 128, 264, 64);
+			let greenLine = line("green", 4, 264, 96, 200, 96);
+			let blueLine = line("blue", 4, 232, 128, 232, 64);
+
+			let message = text("Hello World!", "24px Futura", "black", 230, 230);
+
+			let squareOne = rectangle(48, 48, "red", "none", 0, 250, 250);
+			let squares = group(squareOne);
+
+			let tiger = sprite(assets["tiger.png"], 242, 242);
+
+			let fairyFrame = frame(
+				assets["images/fairy.png"],
+				0, 0, 48, 32
+			);
+
+			let fairy = sprite(fairyFrame, 150, 20);
+
+			let fairyFrames = frames(
+				assets["images/fairy.png"],
+				[[0,0], [48,0], [96,0]],
+				48, 32
+			);
+
+			let fairy2 = sprite(fairyFrames, 222, 222);
+			fairy2.gotoAndStop(2);
+
+			let buttonFrames = [
+				assets["up.png"],
+				assets["over.png"],
+				assets["down.png"]
+			];
+
+			let button = sprite(buttonFrames, 300, 280);
+			button.gotoAndStop(1);
+
+			let animalImages = [
+				assets["images/hedgehog.png"],
+				assets["images/tiger.png"],
+				assets["images/cat.png"]
+			];
+
+			let animals = sprite(animalImages, 320, 410);
+			animals.gotoAndStop(2);
+
+			render(canvas);
+		}
+
+
+
+	</script>
+</body>
+</html>

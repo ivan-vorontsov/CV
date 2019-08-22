@@ -48,7 +48,7 @@ function appLoop(elapsed) {
 }
 
 function sineWave(x, t) {
-    let y = A * Math.sin(p * (k * x - omega * t + phi)) + D;
+    let y = A * Math.sin(k * x - omega * t + phi) + D;
     return y;
 }
 
