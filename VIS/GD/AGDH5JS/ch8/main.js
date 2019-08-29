@@ -483,3 +483,126 @@ function particleEffect(
 		particles.push(particle);
 	}
 }
+
+function emitter(interval, particleFunction) {
+	let emitter = {},
+			timerInterval = undefined;
+
+	emitter.playing = false;
+
+	function play() {
+		if(!emitter.playing) {
+			particleFunction();
+			timerInterval = setInterval(emitParticle.bind(this), interval);
+			emitter.playing = true;
+		}
+	}
+
+	function stop() {
+		if (emitter.playing) {
+			clearInterval(timerInterval);
+			emitter.playing = false;
+		}
+	}
+
+	function emitParticle() {
+		particleFunction();
+	}
+
+	emitter.play = play;
+	emitter.stop = stop;
+	return emitter;
+}
+
+function tilingSprite(width, height, source, x = 0, y = 0) {
+	let tileWidth, tileHeight;
+
+	if (source.frame) {
+		tileWidth = source.frame.w;
+		tileHeight = source.frame.h;
+	}
+
+	else {
+		tileWidth = source.width;
+		tileHeight = source.height;
+	}
+
+	let columns, rows;
+
+	if (width >= tileWidth) {
+		columns = Math.round(width / tileWidth) + 1;
+	}
+	else {
+		columns = 2;
+	}
+
+	if (height >= tileHeight) {
+		rows = Math.round(height / tileHeight) + 1;
+	}
+	else {
+		rows = 2;
+	}
+
+	let tileGrid = grid(
+		columns, rows, tileWidth, tileHeight, false, 0, 0,
+		() => {
+			let tile = sprite(source);
+			return tile;
+		}
+	);
+	tileGrid._tileX = 0;
+	tileGrid._tileY = 0;
+
+	let container = rectangle(width, height, "none", "none");
+	container.x = x;
+	container.y = y;
+
+	container.mask = true;
+
+	container.addChild(tileGrid);
+
+	Object.defineProperties(container, {
+		tileX: {
+			get() {
+				return tileGrid._tileX;
+			},
+			set(value) {
+				tileGrid.children.forEach(child => {
+					let difference = value - tileGrid._tileX;
+					child.x += difference;
+					if (child.x > (columns - 1) * tileWidth) {
+						child.x = 0 - tileWidth + difference;
+					}
+
+					if (child.x < 0 - tileWidth - difference) {
+						child.x = (columns - 1) * tileWidth;
+					}
+				});
+				tileGrid._tileX = value;
+			},
+			enaberable: true, configurable: true
+		},
+		tileY: {
+			get() {
+				return tileGrid._tileY;
+			},
+			set(value) {
+				tileGrid.children.forEach(child => {
+					let difference = value - tileGrid._tileY;
+					child.y += difference;
+					if (child.y > (rows - 1) * tileHeight) child.y = 0 - tileHeight + difference;
+					if (child.y < 0 - tileHeight - difference) child.y = (rows - 1) * tileHeight;
+				});
+				tileGrid._tileY = value;
+			},
+			enaberable: true, configurable: true
+		}
+	});
+	return container;
+}
+
+function wait(duration = 0) {
+	return new Promise((resolve, reject) => {
+		setTimeout(resolve, duration);
+	})
+}
