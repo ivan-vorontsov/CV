@@ -109,6 +109,11 @@ function update() {
         }
     }
     fullScreenButton.update();
+    if (!document.fullscreenElement) {
+        fullScreenButton.text = "+";
+    } else {
+        fullScreenButton.text = "-";
+    }
 }
 
 function renderImage(ctx) {
@@ -159,11 +164,9 @@ function sineWave(x, t) {
 function toggleFullscreeen() {
     if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen();
-        fullScreenButton.text = "-";
     } else {
         if (document.exitFullscreen) {
             document.exitFullscreen();
-            fullScreenButton.text = "+";
         }
     }
 }
