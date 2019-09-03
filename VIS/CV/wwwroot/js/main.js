@@ -9,7 +9,7 @@
         radius = Math.max(canvas.width, canvas.height) / 180;
         offset = canvas.width / 16;
         D = canvas.height / 2;
-        imageWidth = canvas.width / 8;
+        imageWidth = canvas.width / 5;
     };
     resize();
     appArea.appendChild(canvas);
@@ -68,7 +68,7 @@ function render(ctx, t) {
     ctx.lineTo(canvas.width, 0);
     ctx.lineTo(0, 0);
     ctx.stroke();
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = "black";
     ctx.fill();
 
     for (let i = 0; i < scales.length; i += 1) {
