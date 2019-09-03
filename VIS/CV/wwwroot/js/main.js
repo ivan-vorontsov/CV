@@ -20,16 +20,20 @@
 
 let canvas, radius, offset, step = 5, positions = [], A = 55, D, k = 0.001,
     omega = 1, phi = 1, p = 0.0005, starPositions = [], scales = [],
-    dencity = 99, _scaleMax = 1, _scaleStep = 0.05, fullScreenButton;
+    dencity = 99, _scaleMax = 1, _scaleStep = 0.05, fullScreenButton, image;
 
 window.addEventListener('load', () => {
-    canvas = makeCanvas();
-    for (let i = 0; i < dencity; i++) {
-        starPositions.push(createRandomPosition(canvas));
-        scales.push(0);
-    }
-    fullScreenButton = new Button("+", 30, 30, 50, 50);
-    appLoop();
+    image = new Image();
+    image.onload = () => {
+        canvas = makeCanvas();
+        for (let i = 0; i < dencity; i++) {
+            starPositions.push(createRandomPosition(canvas));
+            scales.push(0);
+        }
+        fullScreenButton = new Button("+", 30, 30, 50, 50);
+        appLoop();
+    };
+    image.src = "/images/xZvpC34d_400x400.jpg";
 });
 
 function appLoop(elapsed) {
@@ -81,6 +85,7 @@ function render(ctx, t) {
     }
 
     fullScreenButton.render(ctx);
+    renderImage(ctx);
 }
 
 function handleInput() {
@@ -105,7 +110,24 @@ function update() {
     fullScreenButton.update();
 }
 
-
+function renderImage(ctx) {
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.beginPath();
+    ctx.arc(0, 0, image.width / 2, 0, 2 * Math.PI, false);
+    ctx.clip();
+    ctx.drawImage(image,
+        0,
+        0,
+        image.width,
+        image.height,
+        -image.width * 0.5,
+        -image.height * 0.5,
+        image.width,
+        image.height
+    );
+    ctx.restore();
+}
 
 function createRandomPosition(canvas) {
     let dr = Math.random() * Math.min(canvas.height, canvas.width) / 2,

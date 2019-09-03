@@ -83,9 +83,9 @@ window.addEventListener('mouseup', () => {
 });
 window.addEventListener('touchstart', (evt) => {
     mousePressed = true;
+    mousePosition.x = evt.touches[0].clientX;
+    mousePosition.y = evt.touches[0].clientY;
 });
 window.addEventListener('touchend', () => {
     mousePressed = false;
-    mousePosition.x = 0;
-    mousePosition.y = 0;
 });
