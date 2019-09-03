@@ -21,7 +21,8 @@
 
 let canvas, radius, offset, step = 5, positions = [], A = 55, D, k = 0.001,
     omega = 1, phi = 1, p = 0.0005, starPositions = [], scales = [],
-    dencity = 99, _scaleMax = 1, _scaleStep = 0.05, fullScreenButton, image, imageWidth;
+    dencity = 99, _scaleMax = 1, _scaleStep = 0.05, fullScreenButton, image, imageWidth,
+    text = "Ivan Vorontsov - Web Developer / Game Designer";
 
 window.addEventListener('load', () => {
     image = new Image();
@@ -87,6 +88,7 @@ function render(ctx, t) {
 
     fullScreenButton.render(ctx);
     renderImage(ctx);
+    renderText(ctx);
 }
 
 function handleInput() {
@@ -132,6 +134,17 @@ function renderImage(ctx) {
         imageWidth,
         imageWidth
     );
+    ctx.restore();
+}
+
+function renderText(ctx) {
+    let fontSize = Math.min(canvas.width, canvas.height) / 40 + "px";
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height / 8);
+    ctx.font = fontSize + " puzzler";
+    let offsetX = ctx.measureText(text).width;
+    ctx.fillStyle = "white";
+    ctx.fillText(text, -offsetX / 2, 0);
     ctx.restore();
 }
 
