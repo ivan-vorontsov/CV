@@ -39,3 +39,4 @@ function rectangle(width, height, fillStyle, strokeStyle, lineWidth, x, y) {
 
 	return sprite;
 }
+

@@ -395,3 +395,214 @@ function filmstrip(image, frameWidth, frameHeight, spacing = 0) {
 
 	return frames(image, positions, frameWidth, frameHeight);
 }
+
+let particles = [];
+
+function particleEffect(
+	x = 0,
+	y = 0,
+	spriteFunction = () => circle(10, "red"),
+	numberOfParticles = 10,
+	gravity = 0,
+	randomSpacing = true,
+	minAngle = 0, maxAngle = 2 * Math.PI,
+	minSize = 4, maxSize = 16,
+	minSpeed = 0.1, maxSpeed = 1,
+	minScaleSpeed = 0.01, maxScaleSpeed = 0.05,
+	minAlphaSpeed = 0.02, maxAlphaSpeed = 0.02,
+	minRotationSpeed = 0.01, maxRotationSpeed = 0.03
+) {
+	let randomFloat = (min, max) => min + Math.random() * (max - min),
+			randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+	let angles = [];
+
+	let angle;
+
+	let spacing = (maxAngle - minAngle) / (numberOfParticles - 1);
+
+	for(let i = 0; i < numberOfParticles; i++) {
+		if(randomSpacing) {
+			angle = randomFloat(minAngle, maxAngle);
+			angles.push(angle);
+		}
+
+		else {
+			if (angle === undefined) angle = minAngle;
+			angles.push(angle);
+			angle += spacing;
+		}
+	}
+
+	angles.forEach(angle => makeParticle(angle));
+
+	function makeParticle(angle) {
+		let particle = spriteFunction();
+		
+		if (particle.frames.length > 0) {
+			particle.gotoAndStop(randomInt(0, particle.frames.length - 1));
+		}	
+
+		particle.x = x - particle.halfWidth;
+		particle.y = y - particle.halfHeight;
+
+		let size = randomInt(minSize, maxSize);
+		particle.width = size;
+		particle.height = size;
+
+		particle.scaleSpeed = randomFloat(minScaleSpeed, maxScaleSpeed);
+		particle.alphaSpeed = randomFloat(minAlphaSpeed, maxAlphaSpeed);
+		particle.rotationSpeed = randomFloat(minRotationSpeed, maxRotationSpeed);
+
+		let speed = randomFloat(minSpeed, maxSpeed);
+		particle.vx = speed * Math.cos(angle);
+		particle.vy = speed * Math.sin(angle);
+
+		particle.update = () => {
+			particle.vy += gravity;
+			particle.x += particle.vx;
+			particle.y += particle.vy;
+
+			if (particle.scaleX - particle.scaleSpeed > 0) {
+				particle.scaleX -= particle.scaleSpeed;
+			}
+			if (particle.scaleY - particle.scaleSpeed > 0) {
+				particle.scaleY -= particle.scaleSpeed;
+			}
+
+			particle.rotation += particle.rotationSpeed;
+
+			particle.alpha -= particle.alphaSpeed;
+
+			if (particle.alpha <= 0) {
+				remove(particle);
+				particles.splice(particles.indexOf(particle), 1);
+			}
+		};
+
+		particles.push(particle);
+	}
+}
+
+function emitter(interval, particleFunction) {
+	let emitter = {},
+			timerInterval = undefined;
+
+	emitter.playing = false;
+
+	function play() {
+		if(!emitter.playing) {
+			particleFunction();
+			timerInterval = setInterval(emitParticle.bind(this), interval);
+			emitter.playing = true;
+		}
+	}
+
+	function stop() {
+		if (emitter.playing) {
+			clearInterval(timerInterval);
+			emitter.playing = false;
+		}
+	}
+
+	function emitParticle() {
+		particleFunction();
+	}
+
+	emitter.play = play;
+	emitter.stop = stop;
+	return emitter;
+}
+
+function tilingSprite(width, height, source, x = 0, y = 0) {
+	let tileWidth, tileHeight;
+
+	if (source.frame) {
+		tileWidth = source.frame.w;
+		tileHeight = source.frame.h;
+	}
+
+	else {
+		tileWidth = source.width;
+		tileHeight = source.height;
+	}
+
+	let columns, rows;
+
+	if (width >= tileWidth) {
+		columns = Math.round(width / tileWidth) + 1;
+	}
+	else {
+		columns = 2;
+	}
+
+	if (height >= tileHeight) {
+		rows = Math.round(height / tileHeight) + 1;
+	}
+	else {
+		rows = 2;
+	}
+
+	let tileGrid = grid(
+		columns, rows, tileWidth, tileHeight, false, 0, 0,
+		() => {
+			let tile = sprite(source);
+			return tile;
+		}
+	);
+	tileGrid._tileX = 0;
+	tileGrid._tileY = 0;
+
+	let container = rectangle(width, height, "none", "none");
+	container.x = x;
+	container.y = y;
+
+	container.mask = true;
+
+	container.addChild(tileGrid);
+
+	Object.defineProperties(container, {
+		tileX: {
+			get() {
+				return tileGrid._tileX;
+			},
+			set(value) {
+				tileGrid.children.forEach(child => {
+					let difference = value - tileGrid._tileX;
+					child.x += difference;
+					if (child.x > (columns - 1) * tileWidth) {
+						child.x = 0 - tileWidth + difference;
+					}
+
+					if (child.x < 0 - tileWidth - difference) {
+						child.x = (columns - 1) * tileWidth;
+					}
+				});
+				tileGrid._tileX = value;
+			},
+			enaberable: true, configurable: true
+		},
+		tileY: {
+			get() {
+				return tileGrid._tileY;
+			},
+			set(value) {
+				tileGrid.children.forEach(child => {
+					let difference = value - tileGrid._tileY;
+					child.y += difference;
+					if (child.y > (rows - 1) * tileHeight) child.y = 0 - tileHeight + difference;
+					if (child.y < 0 - tileHeight - difference) child.y = (rows - 1) * tileHeight;
+				});
+				tileGrid._tileY = value;
+			},
+			enaberable: true, configurable: true
+		}
+	});
+	return container;
+}
+
+function wait(duration = 0) {
+	return new Promise((resolve, reject) => {
+		setTimeout(resolve, duration);
+	})
+}
