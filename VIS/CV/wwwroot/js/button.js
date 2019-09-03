@@ -45,7 +45,9 @@
             my = mousePosition.y;
         if (this.x < mx && this.x + this.width > mx
             && this.y < my && this.y + this.height > my) {
-            this.hover = true;
+            if (!isTouchDevice) {
+                this.hover = true;
+            }
             if (mousePressed) {
                 this.hover = false;
                 this.pressed = true;
@@ -70,7 +72,9 @@
     }
 }
 
-let mousePosition = {x: 0, y: 0}, mousePressed = false;
+let mousePosition = { x: 0, y: 0 },
+    mousePressed = false,
+    isTouchDevice = 'ontouchstart' in window || navigator.msMaxTouchPoints > 0;
 
 window.addEventListener('mousemove', (evt) => {
     mousePosition = { x: evt.clientX, y: evt.clientY };
