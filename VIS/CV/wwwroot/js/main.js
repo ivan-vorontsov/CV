@@ -18,9 +18,9 @@
 
 // ------------
 
-let canvas, radius, offset, step = 5, positions = [], A = 30, D, k = 10,
-    omega = 5000, phi = 1, p = 0.0005, starPositions = [], scales = [],
-    dencity = 9999, _scaleMax = 1, _scaleStep = 0.05;
+let canvas, radius, offset, step = 5, positions = [], A = 55, D, k = 0.001,
+    omega = 1, phi = 1, p = 0.0005, starPositions = [], scales = [],
+    dencity = 99, _scaleMax = 1, _scaleStep = 0.05, fullScreenButton;
 
 window.addEventListener('load', () => {
     canvas = makeCanvas();
@@ -28,6 +28,7 @@ window.addEventListener('load', () => {
         starPositions.push(createRandomPosition(canvas));
         scales.push(0);
     }
+    fullScreenButton = new Button("+", 30, 30, 50, 50);
     appLoop();
 });
 
@@ -42,14 +43,11 @@ function appLoop(elapsed) {
         positions.push([x, y]);
     }
 
+    handleInput();
+
     update(elapsed);
 
     render(canvas.context, elapsed * 0.001);
-}
-
-function sineWave(x, t) {
-    let y = A * Math.sin(k * x - omega * t + phi) + D;
-    return y;
 }
 
 function render(ctx, t) {
@@ -57,21 +55,16 @@ function render(ctx, t) {
     ctx.lineWidth = 3;
     ctx.strokeStyle = "blue";
     ctx.beginPath();
-    ctx.moveTo(positions[0][0], positions[0][1]);
+    ctx.moveTo(0, 0);
+    ctx.lineTo(positions[0][0], positions[0][1]);
     for (let i = 1; i < positions.length; i++) {
         ctx.lineTo(positions[i][0], positions[i][1]);
     }
+    ctx.lineTo(canvas.width, 0);
+    ctx.lineTo(0, 0);
     ctx.stroke();
     ctx.fillStyle = "blue";
-    for (let i = 0; i < positions.length - 1; i += 1) {
-        ctx.beginPath();
-        ctx.moveTo(positions[i][0], 0);
-        ctx.lineTo(positions[i + 1][0], 0);
-        ctx.lineTo(positions[i + 1][0], positions[i + 1][1]);
-        ctx.lineTo(positions[i][0], positions[i][1]);
-        ctx.closePath();
-        ctx.fill();
-    }
+    ctx.fill();
 
     for (let i = 0; i < scales.length; i += 1) {
         let scale = scales[i];
@@ -86,11 +79,16 @@ function render(ctx, t) {
         }
         drawStar(pos, scale, ctx);
     }
+
+    fullScreenButton.render(ctx);
 }
 
-
-
-// ------------
+function handleInput() {
+    fullScreenButton.handleInput();
+    if (fullScreenButton.clicked) {
+        toggleFullscreeen();
+    }
+}
 
 function update() {
     for (let i = 0; i < scales.length; i += 1) {
@@ -104,7 +102,10 @@ function update() {
             starPositions[i] = createRandomPosition(canvas);
         }
     }
+    fullScreenButton.update();
 }
+
+
 
 function createRandomPosition(canvas) {
     let dr = Math.random() * Math.min(canvas.height, canvas.width) / 2,
@@ -126,8 +127,20 @@ function drawStar(pos, scale, ctx) {
     ctx.restore();
 }
 
-//function bezierCurve(t, p0, p1, p2, p3) {
-//    let x = Math.pow(1 - t, 3) * p0.x + 3 * t * Math.pow(1 - t, 2) * p1.x + 3 * t * t * (1 - t) * p2.x + Math.pow(t, 3) * p3.x;
-//    let y = Math.pow(1 - t, 3) * p0.y + 3 * t * Math.pow(1 - t, 2) * p1.y + 3 * t * t * (1 - t) * p2.y + Math.pow(t, 3) * p3.y;
-//    return { x: x, y: y };
-//}
+
+function sineWave(x, t) {
+    let y = A * Math.sin(k * x - omega * t + phi) + D;
+    return y;
+}
+
+function toggleFullscreeen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+        fullScreenButton.text = "-";
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+            fullScreenButton.text = "+";
+        }
+    }
+}
