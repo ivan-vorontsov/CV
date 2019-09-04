@@ -3,17 +3,7 @@
     let appArea = document.querySelector("#appArea");
     canvas.context = canvas.getContext("2d");
     canvas.setAttribute('id', 'appCanvas');
-    let resize = () => {
-        canvas.width = appArea.clientWidth;
-        canvas.height = appArea.clientHeight;
-        radius = Math.max(canvas.width, canvas.height) / 180;
-        offset = canvas.width / 16;
-        D = canvas.height / 2;
-        imageWidth = canvas.width / 5;
-    };
-    resize();
     appArea.appendChild(canvas);
-    window.addEventListener('resize', resize);
     return canvas;
 }
 
@@ -21,22 +11,54 @@
 
 let canvas, radius, offset, step = 5, positions = [], A = 55, D, k = 0.001,
     omega = 1, phi = 1, p = 0.0005, starPositions = [], scales = [],
-    dencity = 99, _scaleMax = 1, _scaleStep = 0.05, fullScreenButton, image, imageWidth,
-    text = "Ivan Vorontsov - Web Developer / Game Designer";
+    dencity = 99, _scaleMax = 1, _scaleStep = 0.05, menuButton, image, imageWidth, pan = 1, APP,
+    text = "Ivan Vorontsov - Web Developer / Game Designer", menu, toggleFullscreenButton;
 
 window.addEventListener('load', () => {
     image = new Image();
     image.onload = () => {
         canvas = makeCanvas();
+        APP = new App_Singleton(1920, 969);
+        APP.onresize = onResize;
+        onResize();
         for (let i = 0; i < dencity; i++) {
             starPositions.push(createRandomPosition(canvas));
             scales.push(0);
         }
-        fullScreenButton = new Button("+", 30, 30, 50, 50);
+        menuButton = new Button("+", 30, 30, 50, 50);
+        menu = new Menu(30, 81);
+        toggleFullscreenButton = new Button("+- Fullscreen", 0, 0, 250, 30, "14px puzzler");
+        menu.addItem(toggleFullscreenButton);
+        menu.addItem(new Button("CSS Page", 0, 31, 250, 30, "14px puzzler"));
         appLoop();
     };
     image.src = "/images/IMG_1232.jpg";
 });
+
+function onResize() {
+    let appArea = document.querySelector("#appArea");
+    appArea.style.width = APP.width + "px";
+    appArea.style.height = APP.height + "px";
+    if (window.innerWidth > APP.width) {
+        let margin = (window.innerWidth - APP.width) / 2;
+        appArea.style.marginLeft = margin + 'px';
+        appArea.style.marginRight = margin + 'px';
+        appArea.style.marginTop = 0 + 'px';
+        appArea.style.marginBottom = 0 + 'px';
+    } else {
+        let margin = (window.innerHeight - APP.height) / 2;
+        appArea.style.marginTop = margin + 'px';
+        appArea.style.marginBottom = margin + 'px';
+        appArea.style.marginLeft = 0 + 'px';
+        appArea.style.marginRight = 0 + 'px';
+    }
+    canvas.width = APP.width;
+    canvas.height = APP.height;
+    radius = Math.max(canvas.width, canvas.height) / 180;
+    offset = canvas.width / 16;
+    D = canvas.height / 2;
+    imageWidth = canvas.width / 5;
+}
 
 function appLoop(elapsed) {
     requestAnimationFrame(appLoop);
@@ -86,15 +108,39 @@ function render(ctx, t) {
         drawStar(pos, scale, ctx);
     }
 
-    fullScreenButton.render(ctx);
+    menuButton.render(ctx);
     renderImage(ctx);
     renderText(ctx);
+    menu.render(ctx);
 }
 
 function handleInput() {
-    fullScreenButton.handleInput();
-    if (fullScreenButton.clicked) {
+    menuButton.handleInput();
+    if (menuButton.clicked) {
+        if (soundBuffer) {
+            let soundNode = actx.createBufferSource();
+            let volumeNode = actx.createGain();
+            let panNode = actx.createStereoPanner();
+
+            soundNode.buffer = soundBuffer;
+
+            soundNode.connect(volumeNode);
+            volumeNode.connect(panNode);
+            panNode.connect(actx.destination);
+
+            volumeNode.gain.value = 0.5;
+            panNode.pan.value = pan;
+            pan *= -1;
+
+            soundNode.start(actx.currentTime);
+        }
+        menu.visible = !menu.visible;
+    }
+    menu.handleInput();
+    if (toggleFullscreenButton.clicked) {
         toggleFullscreeen();
+        menu.visible = false;
+        toggleFullscreenButton.clicked = false;
     }
 }
 
@@ -110,12 +156,13 @@ function update() {
             starPositions[i] = createRandomPosition(canvas);
         }
     }
-    fullScreenButton.update();
-    if (!document.fullscreenElement) {
-        fullScreenButton.text = "+";
+    menuButton.update();
+    if (!menu.visible) {
+        menuButton.text = "+";
     } else {
-        fullScreenButton.text = "-";
+        menuButton.text = "-";
     }
+    menu.update();
 }
 
 function renderImage(ctx) {

@@ -1,8 +1,10 @@
 ﻿class Button {
-    constructor(text, x = 0, y = 0, width = 60, height = 40) {
+    constructor(text, x = 0, y = 0, width = 60, height = 40, font = "30px puzzler",
+        color = "white", hoverBackground = "darkgrey", pressBackground = "lightgray",
+        normalBackground = "black") {
         this.text = text;
-        this.x = x;
-        this.y = y;
+        this._x = x;
+        this._y = y;
         this.width = width;
         this.height = height;
         this.hover = false;
@@ -10,15 +12,20 @@
         this.clicked = false;
         this.fillStyle = undefined;
         this.timer = 0;
+        this.font = font;
+        this.hoverBackground = hoverBackground;
+        this.pressBackground = pressBackground;
+        this.normalBackground = normalBackground;
+        this.parent = null;
     }
 
     render(ctx) {
         ctx.save();
-        ctx.translate(this.x, this.y);
+        ctx.translate(this._x, this._y);
         ctx.fillStyle = this.fillStyle;
         ctx.fillRect(0, 0, this.width, this.height);
         ctx.fillStyle = "white";
-        ctx.font = "30px puzzler";
+        ctx.font = this.font;
         ctx.textBaseline = "top";
         let dx = 0, dy = 0,
             textWidth = ctx.measureText(this.text).width,
@@ -31,11 +38,11 @@
 
     update() {
         if (this.hover) {
-            this.fillStyle = "darkgrey";
+            this.fillStyle = this.hoverBackground;
         } else if (this.pressed) {
-            this.fillStyle = "lightgrey";
+            this.fillStyle = this.pressBackground;
         } else {
-            this.fillStyle = "black";
+            this.fillStyle = this.normalBackground;
         }
     }
 
@@ -70,26 +77,14 @@
         }
 
     }
+
+    get x() {
+        if (!this.parent) return this._x;
+        return this.parent.x + this._x;
+    }
+
+    get y() {
+        if (!this.parent) return this._y;
+        return this.parent.y + this._y;
+    }
 }
-
-let mousePosition = { x: 0, y: 0 },
-    mousePressed = false,
-    isTouchDevice = 'ontouchstart' in window || navigator.msMaxTouchPoints > 0;
-
-window.addEventListener('mousemove', (evt) => {
-    mousePosition = { x: evt.clientX, y: evt.clientY };
-});
-window.addEventListener('mousedown', () => {
-    mousePressed = true;
-});
-window.addEventListener('mouseup', () => {
-    mousePressed = false;
-});
-window.addEventListener('touchstart', (evt) => {
-    mousePressed = true;
-    mousePosition.x = evt.touches[0].clientX;
-    mousePosition.y = evt.touches[0].clientY;
-});
-window.addEventListener('touchend', () => {
-    mousePressed = false;
-});
