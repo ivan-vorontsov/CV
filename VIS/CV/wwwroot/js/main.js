@@ -1,4 +1,4 @@
-﻿function makeCanvas() {
+function makeCanvas() {
     let canvas = document.createElement("canvas");
     let appArea = document.querySelector("#appArea");
     canvas.context = canvas.getContext("2d");
@@ -12,7 +12,7 @@
 let canvas, radius, offset, step = 5, positions = [], A = 55, D, k = 0.001,
     omega = 1, phi = 1, p = 0.0005, starPositions = [], scales = [],
     dencity = 99, _scaleMax = 1, _scaleStep = 0.05, menuButton, image, imageWidth, pan = 1, APP,
-    text = "Ivan Vorontsov - Web Developer / Game Designer", menu, toggleFullscreenButton;
+    text = "Ivan Vorontsov - Web Developer / Game Designer", menu, toggleFullscreenButton, adminButton;
 
 window.addEventListener('load', () => {
     image = new Image();
@@ -29,7 +29,8 @@ window.addEventListener('load', () => {
         menu = new Menu(15, 81);
         toggleFullscreenButton = new Button("+- Fullscreen", 0, 0, 250, 30, "14px puzzler", "black", "lightgrey", "darkgrey", "white");
         menu.addItem(toggleFullscreenButton);
-        menu.addItem(new Button("Dummy", 0, 31, 250, 30, "14px puzzler", "black", "lightgrey", "darkgrey", "white"));
+        adminButton = new Button("Admin", 0, 31, 250, 30, "14px puzzler", "black", "lightgrey", "darkgrey", "white");
+        menu.addItem(adminButton);
         menu.addItem(new Button("Dummy 2", 0, 62, 250, 30, "14px puzzler", "black", "lightgrey", "darkgrey", "white"));
         window.addEventListener("mousemove", handleMouseMove);
         window.addEventListener('mousedown', handleMouseDown);
@@ -123,6 +124,7 @@ function render(ctx, t) {
 
 function handleInput() {
     menuButton.handleInput();
+
     if (menuButton.clicked) {
         if (soundBuffer) {
             let soundNode = actx.createBufferSource();
@@ -142,6 +144,9 @@ function handleInput() {
             soundNode.start(actx.currentTime);
         }
         menu.visible = !menu.visible;
+    }
+    if (adminButton.clicked) {
+        window.location = "/Home/Admin";
     }
     menu.handleInput();
     if (toggleFullscreenButton.clicked) {

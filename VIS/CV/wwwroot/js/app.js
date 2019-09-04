@@ -26,6 +26,4 @@
         resize();
         window.addEventListener('resize', resize);
     }
-
-
 }

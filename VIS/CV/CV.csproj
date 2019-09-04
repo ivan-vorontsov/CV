@@ -2,7 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="boot.ts" />
+    <None Remove="src\app\models\menu.item.model.ts" />
+    <None Remove="src\app\models\menu.model.ts" />
+    <None Remove="src\app\models\model.module.ts" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.6" />
@@ -15,6 +23,13 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\fonts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="src\app\models\menu.item.model.ts" />
+    <TypeScriptCompile Include="src\app\models\menu.model.ts" />
+    <TypeScriptCompile Include="src\app\models\model.module.ts" />
+    <TypeScriptCompile Include="src\boot.ts" />
   </ItemGroup>
 
 </Project>
