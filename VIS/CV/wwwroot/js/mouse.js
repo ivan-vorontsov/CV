@@ -19,9 +19,12 @@ function handleMouseUp(evt) {
 }
 
 function handleTouchStart(evt) {
+    let canvasBounds = canvas.getBoundingClientRect(),
+        offsetLeft = canvasBounds.left,
+        offsetTop = canvasBounds.top;
     mousePressed = true;
-    mousePosition.x = evt.touches[0].clientX;
-    mousePosition.y = evt.touches[0].clientY;
+    mousePosition.x = (evt.touches[0].clientX - offsetLeft) / APP.scaleX;
+    mousePosition.y = (evt.touches[0].clientY - offsetTop) / APP.scaleY;
 }
 
 function handleTouchEnd(evt) {
