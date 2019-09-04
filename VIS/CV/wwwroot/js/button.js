@@ -13,6 +13,7 @@
         this.fillStyle = undefined;
         this.timer = 0;
         this.font = font;
+        this.color = color;
         this.hoverBackground = hoverBackground;
         this.pressBackground = pressBackground;
         this.normalBackground = normalBackground;
@@ -21,17 +22,19 @@
 
     render(ctx) {
         ctx.save();
-        ctx.translate(this._x, this._y);
+        ctx.translate(this._x * APP.scaleX, this._y * APP.scaleY);
         ctx.fillStyle = this.fillStyle;
-        ctx.fillRect(0, 0, this.width, this.height);
-        ctx.fillStyle = "white";
-        ctx.font = this.font;
+        ctx.fillRect(0, 0, this.width * APP.scaleX, this.height * APP.scaleY);
+        ctx.fillStyle = this.color;
+        let fontSize = parseFloat(this.font.split(' ')[0]);
+        fontSize = fontSize * APP.scaleY;
+        ctx.font = fontSize + "px " + this.font.split(' ')[1];
         ctx.textBaseline = "top";
         let dx = 0, dy = 0,
             textWidth = ctx.measureText(this.text).width,
             textHeight = ctx.measureText("M").width;
-        dx = this.width / 2 - textWidth / 2;
-        dy = this.height / 2 - textHeight / 2;
+        dx = this.width * APP.scaleX / 2 - textWidth / 2;
+        dy = this.height * APP.scaleY / 2 - textHeight / 2;
         ctx.fillText(this.text, dx, dy);
         ctx.restore();
     }

@@ -19,8 +19,8 @@
                 this.width = newWidth;
                 this.height = this.width / this.aspectRatio;
             }
-            this.scaleX = newWidth / width;
-            this.scaleY = newHeight / height;
+            this.scaleX = this.width / width;
+            this.scaleY = this.height / height;
             if (this.onresize) this.onresize();
         };
         resize();

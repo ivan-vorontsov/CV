@@ -24,16 +24,22 @@
     render(ctx) {
         if (!this.visible) return;
         ctx.save();
-        ctx.translate(this.x, this.y);
+        ctx.translate(this.x * APP.scaleX, this.y * APP.scaleY);
         ctx.beginPath();
         ctx.moveTo(0, 0);
-        ctx.lineTo(this.width, 0);
-        ctx.lineTo(this.width, this.height);
-        ctx.lineTo(0, this.height);
-        ctx.lineTo(0, 0);
-
+        ctx.moveTo(0, 15);
+        ctx.quadraticCurveTo(0, 0, 15, 0);
+        ctx.lineTo(this.width * APP.scaleX - 15, 0);
+        ctx.quadraticCurveTo(this.width * APP.scaleX, 0, this.width * APP.scaleX, 15);
+        ctx.lineTo(this.width * APP.scaleX, this.height * APP.scaleY - 15);
+        ctx.quadraticCurveTo(this.width * APP.scaleX, this.height * APP.scaleY, this.width * APP.scaleX - 15, this.height * APP.scaleY);
+        ctx.lineTo(15, this.height * APP.scaleY);
+        ctx.quadraticCurveTo(0, this.height * APP.scaleY, 0, this.height * APP.scaleY - 15);
+        ctx.lineTo(0, 15);
+        ctx.closePath();
         ctx.fillStyle = "#e5e5e5";
         ctx.fill();
+        ctx.clip();
 
         this.items.forEach(item => {
             item.render(ctx);

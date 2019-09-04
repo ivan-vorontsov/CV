@@ -25,11 +25,17 @@ window.addEventListener('load', () => {
             starPositions.push(createRandomPosition(canvas));
             scales.push(0);
         }
-        menuButton = new Button("+", 30, 30, 50, 50);
-        menu = new Menu(30, 81);
-        toggleFullscreenButton = new Button("+- Fullscreen", 0, 0, 250, 30, "14px puzzler");
+        menuButton = new Button("+", 30, 30, 50, 50, "30px puzzler", "black", "lightgrey", "darkgrey", "white");
+        menu = new Menu(15, 81);
+        toggleFullscreenButton = new Button("+- Fullscreen", 0, 0, 250, 30, "14px puzzler", "black", "lightgrey", "darkgrey", "white");
         menu.addItem(toggleFullscreenButton);
-        menu.addItem(new Button("CSS Page", 0, 31, 250, 30, "14px puzzler"));
+        menu.addItem(new Button("Dummy", 0, 31, 250, 30, "14px puzzler", "black", "lightgrey", "darkgrey", "white"));
+        menu.addItem(new Button("Dummy 2", 0, 62, 250, 30, "14px puzzler", "black", "lightgrey", "darkgrey", "white"));
+        window.addEventListener("mousemove", handleMouseMove);
+        window.addEventListener('mousedown', handleMouseDown);
+        window.addEventListener('mouseup', handleMouseUp);
+        window.addEventListener('touchstart', handleTouchStart);
+        window.addEventListener('touchend', handleTouchEnd);
         appLoop();
     };
     image.src = "/images/IMG_1232.jpg";
@@ -57,6 +63,7 @@ function onResize() {
     radius = Math.max(canvas.width, canvas.height) / 180;
     offset = canvas.width / 16;
     D = canvas.height / 2;
+    A = A * APP.scaleY;
     imageWidth = canvas.width / 5;
 }
 
