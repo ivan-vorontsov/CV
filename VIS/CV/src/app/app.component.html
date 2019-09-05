@@ -1,0 +1,18 @@
+<div id="wrapper" [class.menu-visible]="menuVisible">
+
+    <div id="sidebar-wrapper">
+        <app-navigation></app-navigation>
+    </div>
+
+    <div id="content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="btn btn-success" (click)="toggleMenuVisible()">+</button>
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

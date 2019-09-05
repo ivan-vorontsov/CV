@@ -2,24 +2,31 @@
     mousePressed = false,
     isTouchDevice = 'ontouchstart' in window || navigator.msMaxTouchPoints > 0;
 
-window.addEventListener('mousemove', (evt) => {
+function handleMouseMove(evt) {
     let canvasBounds = canvas.getBoundingClientRect(),
         offsetLeft = canvasBounds.left,
         offsetTop = canvasBounds.top;
 
-    mousePosition = { x: (evt.clientX - offsetLeft), y: (evt.clientY - offsetTop) };
-});
-window.addEventListener('mousedown', () => {
+    mousePosition = { x: (evt.clientX - offsetLeft) / APP.scaleX, y: (evt.clientY - offsetTop) / APP.scaleY };
+}
+
+function handleMouseDown(evt) {
     mousePressed = true;
-});
-window.addEventListener('mouseup', () => {
+}
+
+function handleMouseUp(evt) {
     mousePressed = false;
-});
-window.addEventListener('touchstart', (evt) => {
+}
+
+function handleTouchStart(evt) {
+    let canvasBounds = canvas.getBoundingClientRect(),
+        offsetLeft = canvasBounds.left,
+        offsetTop = canvasBounds.top;
     mousePressed = true;
-    mousePosition.x = evt.touches[0].clientX;
-    mousePosition.y = evt.touches[0].clientY;
-});
-window.addEventListener('touchend', () => {
+    mousePosition.x = (evt.touches[0].clientX - offsetLeft) / APP.scaleX;
+    mousePosition.y = (evt.touches[0].clientY - offsetTop) / APP.scaleY;
+}
+
+function handleTouchEnd(evt) {
     mousePressed = false;
-});
+}
