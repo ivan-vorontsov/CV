@@ -9,7 +9,7 @@ export class AppComponent {
     title = 'Admin';
     menuVisible = false;
 
-    toggleMenuVisible() {
+    toggleMenu() {
         this.menuVisible = !this.menuVisible;
     }
 }
