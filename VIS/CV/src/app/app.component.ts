@@ -7,9 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
     title = 'Admin';
-    menuVisible = false;
+    menuHidden = false;
 
     toggleMenu() {
-        this.menuVisible = !this.menuVisible;
+        this.menuHidden = !this.menuHidden;
     }
 }
