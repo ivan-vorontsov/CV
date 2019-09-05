@@ -3,6 +3,10 @@ import { Component } from '@angular/core';
 let AppComponent = class AppComponent {
     constructor() {
         this.title = 'Admin';
+        this.menuVisible = false;
+    }
+    toggleMenuVisible() {
+        this.menuVisible = !this.menuVisible;
     }
 };
 AppComponent = tslib_1.__decorate([
