@@ -24,7 +24,7 @@
 
 #content {
     width: calc(100% - 250px);
-    padding: 40px;
+    padding: 10px;
     min-height: 100vh;
     transition: all 0.3s;
     position: absolute;
@@ -34,4 +34,8 @@
 
 #content.active {
     width: 100%;
+}
+
+#toggle_navigation{
+    margin-left: auto;
 }
