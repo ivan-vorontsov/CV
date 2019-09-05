@@ -1,18 +1,24 @@
-<div id="wrapper" [class.menu-visible]="menuVisible">
+<div class="wrapper">
 
-    <div id="sidebar-wrapper">
+    <nav id="sidebar" [class.active]="menuHidden">
         <app-navigation></app-navigation>
-    </div>
+    </nav>
 
-    <div id="content-wrapper">
+    <div id="content" [class.active]="menuHidden">
+
         <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <button type="button" class="btn btn-info" (click)="toggleMenu()">
+                    <i class="fa fa-align-left"></i>
+                </button>
+            </nav>
             <div class="row">
                 <div class="col">
-                    <button type="button" class="btn btn-success" (click)="toggleMenuVisible()">+</button>
                     <router-outlet></router-outlet>
                 </div>
             </div>
         </div>
+
     </div>
 
 </div>

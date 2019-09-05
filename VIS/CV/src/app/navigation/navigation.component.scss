@@ -1,18 +1,43 @@
-.sidebar-nav {
-    padding: 0;
-    list-style: none;
-}
-.sidebar-nav li {
-    text-indent: 20px;
-    line-height: 40px;
+a[data-toggle="collapse"] {
+    position: relative;
 }
 
-.sidebar-nav li a {
+.dropdown-toggle::after{
     display: block;
-    text-decoration: none;
-    color: #ddd;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
 }
 
-.sidebar-nav li a:hover {
-    background: #16a085;
+.sidebar-header {
+    padding: 20px;
+    background: #6d7fcc;
+}
+
+ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid #47748b;
+}
+
+ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+}
+
+ul li a:hover {
+    color: #7386D5;
+    background: #fff;
+}
+
+ul li a.active > a, a[aria-expanded="true"] {
+    color: #fff;
+    background: #6d7fcc;
+}
+
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: #6d7fcc;
 }
