@@ -11,7 +11,7 @@ function makeCanvas() {
 
 let canvas, radius, offset, step = 5, positions = [], A = 55, D, k = 0.001,
     omega = 1, phi = 1, p = 0.0005, starPositions = [], scales = [],
-    dencity = 99, _scaleMax = 1, _scaleStep = 0.05, menuButton, image, imageWidth, pan = 1, APP,
+    dencity = 400, _scaleMax = 1, _scaleStep = 0.05, menuButton, image, imageWidth, pan = 1, APP,
     text = "Ivan Vorontsov - Web Developer / Game Designer", menu, toggleFullscreenButton, adminButton;
 
 window.addEventListener('load', () => {
