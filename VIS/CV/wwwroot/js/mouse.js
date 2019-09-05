@@ -1,4 +1,4 @@
-﻿let mousePosition = { x: 0, y: 0 },
+let mousePosition = { x: 0, y: 0 },
     mousePressed = false,
     isTouchDevice = 'ontouchstart' in window || navigator.msMaxTouchPoints > 0;
 

@@ -154,6 +154,14 @@ function handleInput() {
         menu.visible = false;
         toggleFullscreenButton.clicked = false;
     }
+
+    let mx = mousePosition.x,
+        my = mousePosition.y;
+    if (menu.visible && mousePressed &&
+        !(mx > menu.x && mx < menu.x + menu.width && my > menu.y && my < menu.y + menu.height) &&
+        !(mx > menuButton.x && mx < menuButton.x + menuButton.width && my > menuButton.y && my < menuButton.y + menuButton.height)) {
+        menu.visible = false;
+    }
 }
 
 function update() {
