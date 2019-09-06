@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { APP_BASE_HREF } from '@angular/common';
 
-import { ModelModule } from "./models/model.module";
 import { HomeComponentComponent } from './home-component/home-component.component';
 import { AboutComponentComponent } from './about-component/about-component.component';
 import { ContactComponentComponent } from './contact-component/contact-component.component';
@@ -23,8 +22,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     ],
     imports: [
         BrowserModule,
-        AppRoutingModule,
-        ModelModule
+        AppRoutingModule
     ],
     providers: [{ provide: APP_BASE_HREF, useValue: '/Home/Admin' }],
     bootstrap: [AppComponent]
