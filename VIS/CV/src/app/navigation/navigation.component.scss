@@ -31,12 +31,12 @@ ul li a:hover {
     background: #fff;
 }
 
-ul li a.active > a, a[aria-expanded="true"] {
+ul li a.active, a[aria-expanded="true"] {
     color: #fff;
     background: #6d7fcc;
 }
 
-ul ul a {
+ul ul a.active {
     font-size: 0.9em !important;
     padding-left: 30px !important;
     background: #6d7fcc;
