@@ -9,7 +9,6 @@
     <None Remove="boot.ts" />
     <None Remove="src\app\models\menu.item.model.ts" />
     <None Remove="src\app\models\menu.model.ts" />
-    <None Remove="src\app\models\model.module.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,7 +27,6 @@
   <ItemGroup>
     <TypeScriptCompile Include="src\app\models\menu.item.model.ts" />
     <TypeScriptCompile Include="src\app\models\menu.model.ts" />
-    <TypeScriptCompile Include="src\app\models\model.module.ts" />
     <TypeScriptCompile Include="src\boot.ts" />
   </ItemGroup>
 

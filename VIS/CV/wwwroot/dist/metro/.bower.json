@@ -1,0 +1,14 @@
+{
+  "name": "metro",
+  "homepage": "https://github.com/olton/Metro-UI-CSS",
+  "version": "4.2.48",
+  "_release": "4.2.48",
+  "_resolution": {
+    "type": "version",
+    "tag": "v4.2.48",
+    "commit": "037917887c5709eefa1d81e378f268fa268d906e"
+  },
+  "_source": "https://github.com/olton/Metro-UI-CSS.git",
+  "_target": "4.2.48",
+  "_originalSource": "metro"
+}

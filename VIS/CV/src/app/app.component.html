@@ -1,24 +1,22 @@
-<div class="wrapper">
-
-    <nav id="sidebar" [class.active]="menuHidden">
-        <app-navigation></app-navigation>
-    </nav>
-
-    <div id="content" [class.active]="menuHidden">
-
-        <div class="container-fluid">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <button type="button" class="btn btn-info" (click)="toggleMenu()">
-                    <i class="fa fa-align-left"></i>
-                </button>
-            </nav>
-            <div class="row">
-                <div class="col">
-                    <router-outlet></router-outlet>
-                </div>
-            </div>
+<div class="wrapper" [class.menu]="!menuHidden">
+    <aside class="sidebar" data-role="sidebar">
+        <div class="sidebar-header">
+            <span class="title">Metro 4 Components Library</span>
+            <span class="subtitle">2019 © Ivan Vorontsov</span>
         </div>
-
+        <ul class="sidebar-menu">
+            <li><a><span class="mif-home icon"></span>Home</a></li>
+            <li><a><span class="mif-books icon"></span>Guide</a></li>
+            <li><a><span class="mif-files-empty icon"></span>Examples</a></li>
+            <li class="divider"></li>
+            <li><a><span class="mif-images icon"></span>Icons</a></li>
+        </ul>
+    </aside>
+    <div class="content">
+        <div class="app-bar pos-absolute bg-red z-1" data-role="appbar">
+            <button class="app-bar-item c-pointer" (click)="toggleMenu()">
+                <span class="mif-menu fg-white"></span>
+            </button>
+        </div>
     </div>
-
 </div>
